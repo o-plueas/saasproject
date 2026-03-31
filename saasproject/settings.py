@@ -1,6 +1,11 @@
 
 
 from pathlib import Path
+from decouple import config, Csv
+
+from datetime import timedelta
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,7 +133,6 @@ REST_FRAMEWORK = {
 
 
 
-from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME':  timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -148,17 +152,19 @@ CORS_ALLOWED_ORIGINS = [
 
 
 
-# settings.py
+# settings.
+# 
+REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379')
+
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        },
-        'KEY_PREFIX': 'saasproject',
+        'LOCATION': f'{REDIS_URL}/1',
+        
     }
 }
+
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
  
@@ -166,13 +172,23 @@ SESSION_CACHE_ALIAS = 'default'
 
 ASGI_APPLICATION = 'saasproject.asgi.application'
  
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG':  {'hosts': [('127.0.0.1', 6379)]},
+#     }
+# }
+ 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG':  {'hosts': [('127.0.0.1', 6379)]},
+        'CONFIG': {'hosts': [REDIS_URL]},
     }
 }
- 
+
+CELERY_BROKER_URL = f'{REDIS_URL}/0'
+CELERY_RESULT_BACKEND = f'{REDIS_URL}/0'
 
 
 
@@ -256,8 +272,7 @@ MEDIA_ROOT =  BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 # use this in dev  static_root works in
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
+STATICFILES_DIRS = [BASE_DIR / 'static'] if os.path.isdir(BASE_DIR / 'static') else []
 
 
 
@@ -270,8 +285,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # celry
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+
 
 CELERY_ACCEPT_CONTENT   = ['json']
 CELERY_TASK_SERIALIZER  = 'json'
@@ -284,12 +298,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 
 
-from decouple import config, Csv 
 
-
-# Development only
-# if DEBUG:
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
  
 # settings.py — PRODUCTION (Gmail SMTP)
