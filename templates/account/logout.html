@@ -1,0 +1,76 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+
+<h2>Sign Out</h2>
+<p class="subtitle">Are you sure you want to sign out?</p>
+
+<form method="POST" action="{% url 'account_logout' %}">
+    {% csrf_token %}
+    <button type="submit">Sign Out</button>
+</form>
+
+<p class="footer-text">
+    <a class="link" href="{% url 'account_login' %}">Cancel & go back</a>
+</p>
+
+<hr style="margin:20px 0;">
+
+<h3>Menu</h3>
+<ul>
+    <li><a class="link" href="{% url 'accounts:account_change_email' %}">Change Email</a></li>
+    <li><a class="link" href="{% url 'account_change_password' %}">Change Password</a></li>
+    <!-- <li><a class="link" href="{% url 'socialaccount_connections' %}">Account Connections</a></li> -->
+</ul>
+
+<style>
+h2 {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #777;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+button:hover {
+    background: #5a67d8;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 8px 0;
+}
+
+.link {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+}
+</style>
+
+{% endblock %}

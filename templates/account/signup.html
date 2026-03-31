@@ -1,0 +1,31 @@
+{% extends "account/base.html" %}
+{% load socialaccount %}
+
+{% block content %}
+
+<h2>Sign Up</h2>
+<p class="subtitle">Create a new account</p>
+
+<form method="POST" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password1" name="password1" placeholder="Password" required>
+    <input type="password2" name="password2" placeholder="Confirm Password" required>
+
+    <button type="submit">Sign Up</button>
+</form>
+
+<div class="divider">OR</div>
+
+<!-- ✅ Google Signup -->
+<a href="{% provider_login_url 'google' %}" class="social-btn google">
+    Continue with Google
+</a>
+
+<p class="footer-text">
+    Already have an account?
+    <a class="link" href="{% url 'account_login' %}">Sign In</a>
+</p>
+
+{% endblock %}

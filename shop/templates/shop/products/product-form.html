@@ -1,0 +1,131 @@
+
+
+
+{% extends 'shop/base.html' %}
+{% block title %} Product Form {% endblock %}
+
+{% block content %}
+
+<style>
+    .form-outer {
+        max-width: 560px;
+        margin: 0 auto;
+        padding-bottom: 40px;
+    }
+
+    .form-card {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .form-top {
+        padding: 24px 28px 20px;
+        border-bottom: 1px solid var(--border);
+        background: var(--soft);
+    }
+    .form-label-tag {
+        font-size: 11px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 2px;
+        color: var(--accent); margin-bottom: 6px; display: block;
+    }
+    .form-top h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 22px; font-weight: 700; color: var(--ink); margin: 0;
+    }
+
+    .form-body { padding: 24px 28px 28px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label.form-label {
+        display: block; font-size: 11px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.8px;
+        color: var(--text-muted); margin-bottom: 6px;
+    }
+
+    .form-card input[type="text"],
+    .form-card input[type="number"],
+    .form-card input[type="email"],
+    .form-card input[type="file"],
+    .form-card textarea,
+    .form-card select {
+        width: 100%; padding: 11px 14px;
+        border-radius: 9px; border: 1.5px solid var(--border);
+        font-size: 14px; font-family: 'DM Sans', sans-serif;
+        color: var(--ink); background: var(--soft);
+        transition: border-color 0.2s, box-shadow 0.2s; margin-bottom: 0;
+    }
+    .form-card input:focus,
+    .form-card textarea:focus,
+    .form-card select:focus {
+        outline: none; border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(200,169,110,0.15); background: #fff;
+    }
+    .form-card textarea { min-height: 95px; resize: vertical; }
+    .form-card input[type="file"] { padding: 9px 14px; cursor: pointer; }
+    .form-card select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23888' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 14px center; background-size: 12px;
+        padding-right: 36px;
+    }
+
+    .field-error { margin-top: 5px; font-size: 12px; color: var(--danger); font-weight: 500; }
+
+    .alert-success-custom {
+        background: #e8f5ee; color: var(--success);
+        border: 1px solid rgba(45,138,78,0.2); border-radius: 9px;
+        font-size: 13px; font-weight: 600; padding: 11px 16px; margin-bottom: 18px;
+    }
+
+    .submit-btn {
+        width: 100%; background: var(--ink); color: white; border: none;
+        padding: 13px; border-radius: 10px;
+        font-size: 15px; font-family: 'DM Sans', sans-serif; font-weight: 700;
+        cursor: pointer; transition: background 0.2s, transform 0.1s; margin-top: 4px;
+    }
+    .submit-btn:hover { background: #222; transform: translateY(-1px); }
+    .submit-btn:active { transform: none; }
+
+    @media (max-width: 575px) {
+        .form-outer { padding-bottom: 24px; }
+        .form-top { padding: 18px 18px 16px; }
+        .form-body { padding: 18px; }
+        .form-top h4 { font-size: 19px; }
+    }
+</style>
+
+<div class="form-outer">
+    <div class="form-card">
+        <div class="form-top">
+            <span class="form-label-tag">Product Management</span>
+            <h4>{{ title }}</h4>
+        </div>
+
+        <div class="form-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert-success-custom">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="field-error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="submit-btn">{{ label }}</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

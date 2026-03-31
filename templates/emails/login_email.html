@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to MyShop</title>
+</head>
+<body>
+    <h2>Hello {{ user.get_full_name|default:user.username }},</h2>
+    <p>You are logged in to<strong>MyShop</strong>!Please confirm this action was taken by you.</p>
+    <b>If yes,</b>
+    <p>Start exploring our products: <a href="http://your-domain.com/">MyShop</a></p>
+
+    <p>Thank you,<br>The MyShop Team</p>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+
+<h2>Change Email</h2>
+<p class="subtitle">Update your account email</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <input type="email" name="email" placeholder="New Email" required>
+    <button type="submit">Update Email</button>
+</form>
+
+<p class="footer-text">
+    <a class="link" href="{% url 'account_logout' %}">Back to Logout</a>
+</p>
+
+{% endblock %}

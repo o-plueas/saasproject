@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+{% load socialaccount %}
+
+{% block content %}
+
+<h2>Sign In</h2>
+<p class="subtitle">
+    If you have not created an account yet, then please
+    <a class="link" href="{% url 'account_signup' %}">sign up</a> first.
+</p>
+
+<form method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    {{ redirect_field }}
+    <label>Email:</label>
+    <input type="email" name="login" placeholder="Enter your email" required>
+
+    <label>Password:</label>
+    <input type="password" name="password" placeholder="••••••••" required>
+
+    <div class="remember">
+        <input type="checkbox" name="remember">
+        <label>Remember Me</label>
+    </div>
+
+    <p>
+        <a class="link" href="{% url 'account_reset_password' %}">
+            Forgot your password?
+        </a>
+    </p>
+
+    <button type="submit">Sign In</button>
+</form>
+
+<div class="divider">Or use a third-party</div>
+
+<a href="{% provider_login_url 'google' %}" class="social-btn google">
+    Continue with Google
+</a>
+
+{% endblock %}

@@ -1,0 +1,382 @@
+{% extends 'accounts/dashboard/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block topbar_title %}
+    {% if user.role == 'admin' %}Admin Dashboard
+    {% elif user.role == 'vendor' %}Vendor Dashboard
+    {% else %}Customer Dashboard{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════════
+     BUYER DASHBOARD
+══════════════════════════════════════════════ -->
+{% if user.role == 'buyer' %}
+
+<div class="section-title">Welcome, {{ user.get_short_name|default:user.email }}!</div>
+<div class="section-subtitle">Here's a summary of your account activity.</div>
+
+<!-- Quick Actions Row -->
+<div class="row g-3 mb-4">
+    <div class="col-auto">
+        <a href="#" class="quick-btn">
+            <div class="qb-icon" style="background:#e8f5e9; color:#27ae60;">
+                <i class="bi bi-download"></i>
+            </div>
+            My Downloads
+        </a>
+    </div>
+    <div class="col-auto">
+        <a href="#" class="quick-btn">
+            <div class="qb-icon" style="background:#e3f2fd; color:#1565c0;">
+                <i class="bi bi-receipt-cutoff"></i>
+            </div>
+            Order History
+        </a>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'accounts:profile' %}" class="quick-btn">
+            <div class="qb-icon" style="background:#f3e5f5; color:#7b1fa2;">
+                <i class="bi bi-person-gear"></i>
+            </div>
+            Account Settings
+        </a>
+    </div>
+</div>
+
+<!-- Stat Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#e8f5e9; color:#27ae60;">
+                <i class="bi bi-download"></i>
+            </div>
+            <div>
+                <div class="stat-label">Total Downloads</div>
+                <div class="stat-value" style="color:#27ae60;">0</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fff3e0; color:#e65100;">
+                <i class="bi bi-bag-check"></i>
+            </div>
+            <div>
+                <div class="stat-label">Active Orders</div>
+                <div class="stat-value" style="color:#e65100;">{{ orders|length }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fce4ec; color:#c62828;">
+                <i class="bi bi-heart"></i>
+            </div>
+            <div>
+                <div class="stat-label">Wishlist</div>
+                <div class="stat-value" style="color:#c62828;">0</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Orders Table -->
+<div class="dash-card">
+    <div class="dash-card-title">Recent Orders</div>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#3d72f8,#6c98fb);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:0.78rem;">
+                            {{ forloop.counter }}
+                        </div>
+                        Order #{{ order.id }}
+                    </div>
+                </td>
+                <td>—</td>
+                <td>{{ order.created_at|date:'d M Y' }}</td>
+                <td>
+                    <span class="status-badge 
+                        {% if order.status == 'pending' %}status-pending
+                        {% elif order.status == 'completed' %}status-completed
+                        {% elif order.status == 'cancelled' %}status-cancelled
+                        {% elif order.status == 'paid' %}status-paid
+                        {% endif %}">
+                        {{ order.status|capfirst }}
+                    </span>
+                </td>
+                <td class="price-green">${{ order.total }}</td>
+                <td><a href="{% url 'orders:orderdetail' order.id %}" class="btn-view">View</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center; padding:30px; color:#8694b2;">
+                    <i class="bi bi-bag-x" style="font-size:1.8rem; display:block; margin-bottom:8px;"></i>
+                    No orders yet.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+
+<!-- ══════════════════════════════════════════════
+     VENDOR DASHBOARD
+══════════════════════════════════════════════ -->
+{% if user.role == 'vendor' %}
+
+<div class="section-title">Welcome, {{ user.get_short_name|default:user.email }}!</div>
+<div class="section-subtitle">Manage your products and track your sales.</div>
+
+<!-- Stat Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#e3f2fd; color:#1565c0;">
+                <i class="bi bi-box-seam"></i>
+            </div>
+            <div>
+                <div class="stat-label">My Products</div>
+                <div class="stat-value">{{ products|length }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fff3e0; color:#e65100;">
+                <i class="bi bi-receipt"></i>
+            </div>
+            <div>
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value">{{ orders|length }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#e8f5e9; color:#27ae60;">
+                <i class="bi bi-cash-stack"></i>
+            </div>
+            <div>
+                <div class="stat-label">Revenue</div>
+                <div class="stat-value" style="color:#27ae60;">—</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Products List -->
+<div class="dash-card mb-3">
+    <div class="dash-card-title">Your Products</div>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product Name</th>
+                <th>Stock</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.stock }}</td>
+                <td><a href="#" class="btn-view">Edit</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align:center; padding:30px; color:#8694b2;">
+                    <i class="bi bi-box" style="font-size:1.8rem; display:block; margin-bottom:8px;"></i>
+                    No products yet. <a href="{% url 'shop:create' %}" style="color:var(--accent);">Add one →</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Vendor Orders -->
+<div class="dash-card">
+    <div class="dash-card-title">Recent Order Items</div>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>Order #{{ order.id }}</td>
+                <td>{{ order.created_at|date:'d M Y' }}</td>
+                <td>
+                    <span class="status-badge
+                        {% if order.status == 'pending' %}status-pending
+                        {% elif order.status == 'completed' %}status-completed
+                        {% elif order.status == 'cancelled' %}status-cancelled
+                        {% endif %}">
+                        {{ order.status|capfirst }}
+                    </span>
+                </td>
+                <td class="price-green">${{ order.total }}</td>
+                <td><a href="{% url 'orders:orderdetail' order.id %}" class="btn-view">View</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center; padding:30px; color:#8694b2;">No orders yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+
+<!-- ══════════════════════════════════════════════
+     ADMIN DASHBOARD
+══════════════════════════════════════════════ -->
+{% if user.role == 'admin' %}
+
+<div class="section-title">Admin Dashboard</div>
+<div class="section-subtitle">Welcome, Admin! Here's a platform-wide overview.</div>
+
+<!-- Admin Stat Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#e3f2fd; color:#1565c0;">
+                <i class="bi bi-people"></i>
+            </div>
+            <div>
+                <div class="stat-label">All Users</div>
+                <div class="stat-value">{{ users|length }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fff3e0; color:#e65100;">
+                <i class="bi bi-receipt"></i>
+            </div>
+            <div>
+                <div class="stat-label">All Orders</div>
+                <div class="stat-value">{{ orders|length }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#e8f5e9; color:#27ae60;">
+                <i class="bi bi-box-seam"></i>
+            </div>
+            <div>
+                <div class="stat-label">All Products</div>
+                <div class="stat-value">{{ products|length }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fce4ec; color:#c62828;">
+                <i class="bi bi-x-circle"></i>
+            </div>
+            <div>
+                <div class="stat-label">Cancelled</div>
+                <div class="stat-value" style="color:#c62828;">{{ cancelled_orders|length }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Breakdown Row -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="dash-card" style="padding:16px 22px; border-left: 4px solid #e65100;">
+            <div style="font-size:0.78rem;font-weight:700;color:#8694b2;text-transform:uppercase;letter-spacing:.5px;">Pending Orders</div>
+            <div style="font-size:1.8rem;font-weight:800;color:#e65100;">{{ pending_orders|length }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dash-card" style="padding:16px 22px; border-left: 4px solid #27ae60;">
+            <div style="font-size:0.78rem;font-weight:700;color:#8694b2;text-transform:uppercase;letter-spacing:.5px;">Completed Orders</div>
+            <div style="font-size:1.8rem;font-weight:800;color:#27ae60;">{{ completed_orders|length }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dash-card" style="padding:16px 22px; border-left: 4px solid #1565c0;">
+            <div style="font-size:0.78rem;font-weight:700;color:#8694b2;text-transform:uppercase;letter-spacing:.5px;">Paid Orders</div>
+            <div style="font-size:1.8rem;font-weight:800;color:#1565c0;">{{ paid_orders|length }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- All Orders Table -->
+<div class="dash-card">
+    <div class="dash-card-title">All Orders</div>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td style="font-weight:700;">#{{ order.id }}</td>
+                <td>{{ order.created_at|date:'d M Y' }}</td>
+                <td>
+                    <span class="status-badge
+                        {% if order.status == 'pending' %}status-pending
+                        {% elif order.status == 'completed' %}status-completed
+                        {% elif order.status == 'cancelled' %}status-cancelled
+                        {% elif order.status == 'paid' %}status-paid
+                        {% endif %}">
+                        {{ order.status|capfirst }}
+                    </span>
+                </td>
+                <td class="price-green">${{ order.total }}</td>
+                <td><a href="{% url 'orders:orderdetail' order.id %}" class="btn-view">View</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center; padding:30px; color:#8694b2;">No orders found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+{% endblock %}

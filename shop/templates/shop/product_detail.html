@@ -1,0 +1,195 @@
+{% extends 'shop/base.html' %}
+{% block title %} {{ product.name }} {% endblock %}
+
+{% block content %}
+
+<style>
+    .detail-wrap {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+
+    .detail-img-panel {
+        position: relative;
+        background: var(--soft);
+        overflow: hidden;
+        min-height: 300px;
+    }
+    .detail-img-panel img {
+        width: 100%; height: 420px;
+        object-fit: cover; display: block;
+        transition: transform 0.4s ease;
+    }
+    .detail-img-panel:hover img { transform: scale(1.03); }
+
+    .stock-pill {
+        position: absolute; top: 16px; left: 16px;
+        padding: 5px 14px; border-radius: 30px;
+        font-size: 11px; font-weight: 700;
+        letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .pill-in  { background: #e8f5ee; color: var(--success); border: 1px solid rgba(45,138,78,0.2); }
+    .pill-out { background: #fdecea; color: var(--danger);  border: 1px solid rgba(192,57,43,0.2); }
+
+    .detail-info {
+        padding: 28px 28px;
+        display: flex; flex-direction: column; height: 100%;
+    }
+
+    .detail-category {
+        font-size: 11px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 2px;
+        color: var(--accent); margin-bottom: 8px;
+    }
+    .detail-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 24px; font-weight: 700; color: var(--ink);
+        line-height: 1.25; margin-bottom: 12px;
+    }
+    .detail-price {
+        font-size: 24px; font-weight: 700; color: var(--ink);
+        margin-bottom: 16px; letter-spacing: -0.5px;
+    }
+    .detail-price span { font-size: 13px; font-weight: 400; color: var(--text-muted); margin-left: 4px; }
+
+    .detail-description {
+        font-size: 14px; color: #666; line-height: 1.7;
+        margin-bottom: 18px;
+        border-left: 3px solid var(--border); padding-left: 14px;
+    }
+
+    .feature-list {
+        list-style: none; padding: 0; margin: 0 0 18px;
+        display: flex; flex-direction: column; gap: 6px;
+    }
+    .feature-list li {
+        font-size: 13px; color: #555;
+        display: flex; align-items: center; gap: 8px;
+    }
+    .feature-list li::before {
+        content: '✓'; width: 18px; height: 18px;
+        background: #e8f5ee; color: var(--success);
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 10px; font-weight: 700; flex-shrink: 0;
+    }
+
+    .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+    .qty-row {
+        display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+        flex-wrap: wrap;
+    }
+    .qty-row label { font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+    .qty-box {
+        display: flex; align-items: center;
+        border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden;
+    }
+    .qty-box a {
+        text-decoration: none; color: var(--ink); font-size: 18px; font-weight: 500;
+        width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+        transition: background 0.15s;
+    }
+    .qty-box a:hover { background: var(--soft); }
+    .qty-box span { width: 40px; text-align: center; font-size: 15px; font-weight: 600; }
+
+    .btn-add-cart {
+        display: block; text-align: center; text-decoration: none;
+        background: var(--ink); color: white;
+        font-size: 15px; font-weight: 700; padding: 13px;
+        border-radius: 10px; border: none; transition: background 0.2s, transform 0.1s;
+        margin-bottom: 12px;
+    }
+    .btn-add-cart:hover { background: #222; color: white; transform: translateY(-1px); }
+
+    .secondary-actions { display: flex; gap: 10px; }
+    .secondary-actions a {
+        flex: 1; text-align: center; text-decoration: none;
+        font-size: 13px; font-weight: 600; padding: 9px;
+        border-radius: 9px; border: 1.5px solid var(--border);
+        color: var(--text-muted); transition: 0.2s;
+    }
+    .secondary-actions a:hover { border-color: var(--ink); color: var(--ink); }
+    .secondary-actions a.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+    .soft-actions {
+        display: flex; justify-content: space-between;
+        font-size: 13px; color: var(--text-muted); margin-top: 14px; cursor: pointer;
+    }
+    .soft-actions span:hover { color: var(--ink); }
+
+    /* Mobile: stack image on top of info */
+    @media (max-width: 767px) {
+        .detail-img-panel img { height: 260px; }
+        .detail-info { padding: 20px 18px; }
+        .detail-title { font-size: 20px; }
+        .detail-price { font-size: 20px; }
+    }
+</style>
+
+<div class="detail-wrap">
+    <div class="row g-0">
+
+        <div class="col-md-6">
+            <div class="detail-img-panel">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% if product.stock > 0 %}
+                <span class="stock-pill pill-in">In Stock · {{ product.stock }}</span>
+                {% else %}
+                <span class="stock-pill pill-out">Out of Stock</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="detail-info">
+                <div class="detail-category">Premium Product</div>
+                <div class="detail-title">{{ product.name }}</div>
+                <div class="detail-price">₦{{ product.effective_price }}<span>per unit</span></div>
+                <div class="detail-description">{{ product.description }}</div>
+
+                <ul class="feature-list">
+                    <li>High quality product</li>
+                    <li>Secure purchase guaranteed</li>
+                    <li>Instant delivery</li>
+                </ul>
+
+                <div class="divider"></div>
+
+                {% if product.stock > 0 %}
+                <div class="qty-row">
+                    <label>In cart:</label>
+                    <div class="qty-box">
+                        <a href="#" class="decrease-btn" data-id="{{ product.id }}">−</a>
+                        <span>
+                            {% for item in cart_items %}
+                                {% if item.product.id == product.id %}{{ item.qty }}{% endif %}
+                            {% empty %}0{% endfor %}
+                        </span>
+                        <a href="" class="increase-btn" data-id="{{ product.id }}">+</a>
+                    </div>
+                </div>
+
+                <a href="{% url 'cart:cart_add' product.id %}" data-id="{{ product.id }}" class="btn-add-cart add-to-cart">
+                    Add to Cart
+                </a>
+                {% endif %}
+
+                <div class="secondary-actions">
+                    <a href="{% url 'shop:update' product.pk %}">✏ Edit</a>
+                    <a href="{% url 'shop:delete' product.pk %}" class="danger">🗑 Delete</a>
+                </div>
+
+                <div class="soft-actions">
+                    <span>♡ Wishlist</span>
+                    <span>🔗 Share</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

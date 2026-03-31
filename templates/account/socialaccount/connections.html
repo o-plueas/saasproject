@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Connections</title>
+    <style>
+        /* General Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h2, h3 {
+            color: #222;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+        }
+
+        ul.social-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        li.social-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .provider {
+            font-weight: 500;
+        }
+
+        .disconnect-btn {
+            padding: 6px 12px;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .disconnect-btn:hover {
+            background: #c53030;
+        }
+
+        .social-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-right: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .social-btn.google { background: #db4437; }
+        .social-btn.facebook { background: #4267B2; }
+        .social-btn:hover { opacity: 0.9; }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .footer-text a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Connected Accounts -->
+    <div class="card">
+        <h2>Connected Accounts</h2>
+        <p class="subtitle">Manage social accounts linked to your profile</p>
+
+        <ul class="social-list">
+            <!-- Example social accounts, replace with Django loop in production -->
+            <li class="social-item">
+                <span class="provider">Google</span>
+                <form method="POST" style="display:inline;">
+                    <button type="submit" class="disconnect-btn">Disconnect</button>
+                </form>
+            </li>
+            <li class="social-item">
+                <span class="provider">Facebook</span>
+                <form method="POST" style="display:inline;">
+                    <button type="submit" class="disconnect-btn">Disconnect</button>
+                </form>
+            </li>
+            <!-- If no accounts connected, show this instead -->
+            <!-- <p>No social accounts connected</p> -->
+        </ul>
+    </div>
+
+    <!-- Add New Social Account -->
+    <div class="card">
+        <h3>Add a New Social Account</h3>
+        <a href="#" class="social-btn google">Connect Google</a>
+        <a href="#" class="social-btn facebook">Connect Facebook</a>
+    </div>
+
+    <!-- Footer -->
+    <p class="footer-text">
+        <a href="#">Back to Logout</a>
+    </p>
+
+</div>
+
+</body>
+</html>

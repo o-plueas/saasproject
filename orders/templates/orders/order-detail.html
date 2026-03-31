@@ -1,0 +1,145 @@
+{% extends 'accounts/dashboard/base.html' %}
+{% block title %} Order Confirmed {% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f5f7fb;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .order-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .order-card {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        width: 500px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .success-icon {
+        width: 60px;
+        height: 60px;
+        background: #2ecc71;
+        color: white;
+        font-size: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .order-id {
+        color: #777;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    .summary-box {
+        background: #f9fafc;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .summary-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+    }
+
+    .summary-item:last-child {
+        border-bottom: none;
+    }
+
+    .label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .value {
+        float: right;
+        color: #555;
+    }
+
+    .total {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .btn-home {
+        margin-top: 20px;
+        background: #4a6cf7;
+        color: white;
+        border-radius: 20px;
+        padding: 8px 20px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-home:hover {
+        background: #2f54eb;
+        color: white;
+    }
+</style>
+
+<div class="order-container">
+
+    <div class="order-card">
+
+        <!-- SUCCESS -->
+        <div class="success-icon">✓</div>
+
+        <div class="text-center">
+            <h5>ORDER DETAIL!.</h5>
+            <div class="order-id">Order #{{ order.id }}</div>
+        </div>
+
+        <!-- ORDER ITEMS -->
+        <div class="summary-box">
+
+            <h6 class="mb-3">Order Details</h6>
+
+            {% for item in orderitems %}
+            <div class="summary-item">
+
+                <div><span class="label">Item ID:</span> <span class="value">{{ item.id }}</span></div>
+                <div><span class="label">Customer:</span> <span class="value">{{ item.order.full_name }}</span></div>
+                <div><span class="label">Product:</span> <span class="value">{{ item.product.name }}</span></div>
+                <div><span class="label">Price:</span> <span class="value">₦{{ item.price }}</span></div>
+                <div><span class="label">Quantity:</span> <span class="value">{{ item.quantity }}</span></div>
+                <div><span class="label">Subtotal:</span> <span class="value">₦{{ item.subtotal }}</span></div>
+
+            </div>
+            {% endfor %}
+
+            <!-- TOTAL -->
+            <div class="summary-item total">
+                <span>Total</span>
+                <span class="value">₦{{ order.total }}</span>
+            </div>
+
+        </div>
+
+        <!-- BUTTON -->
+        <div class="text-center">
+            <a href="{% url 'shop:shop' %}" class="btn-home">
+                Back to Home
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

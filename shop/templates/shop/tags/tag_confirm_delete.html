@@ -1,0 +1,64 @@
+{% extends 'shop/base.html' %}
+{% block title %} Confirm Delete {% endblock %}
+
+{% block content %}
+
+<style>
+/* CARD CONTAINER */
+.confirm-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+/* TITLE */
+.confirm-title {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* BUTTONS */
+.btn-confirm {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.btn-confirm:hover {
+    background: #a71d2a;
+}
+
+.btn-cancel {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    background: #495057;
+}
+</style>
+
+<div class="confirm-card">
+
+    <h4 class="confirm-title">Confirm Delete Tag?</h4>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn-confirm">YES</button>
+        <a href="{% url 'shop:taglist' %}" class="btn-cancel">Cancel</a>
+    </form>
+
+</div>
+
+{% endblock %}

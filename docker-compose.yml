@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: daphne -b 0.0.0.0 -p 8000 saasproject.asgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery -A saasproject worker -l info
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+
+  celery-beat:
+    build: .
+    command: celery -A saasproject beat -l info
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+    env_file:
+      - .env

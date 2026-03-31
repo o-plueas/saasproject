@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forbidden</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            text-align: center;
+            padding: 100px;
+        }
+        h1 {
+            font-size: 60px;
+            color: #dc3545;
+        }
+        p {
+            font-size: 20px;
+            color: #6c757d;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>403</h1>
+    <p>{{user.username}}</p>
+    <p>Sorry, you are not authorized to access this page.</p>
+    <a href="{% url 'shop:shop' %}">Go back to Shop</a>
+</body>
+</html>

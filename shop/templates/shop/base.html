@@ -1,0 +1,312 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop | {% block title %}{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- ══ FIXED NAVBAR ══ -->
+    <nav class="navbar-custom">
+        <a href="{% url 'shop:shop' %}" class="logo">Shoppe.</a>
+
+        <div class="nav-links">
+            <a class="navlink" href="{% url 'shop:shop' %}">Home</a>
+            <a class="navlink" href="{% url 'shop:taglist' %}">Tags</a>
+            <a class="navlink" href="{% url 'shop:categorylist' %}">Category</a>
+            <a class="navlink" href="{% url 'shop:create' %}?next={{ request.path }}">+ Product</a>
+        </div>
+
+        <div class="nav-search">
+            <form action="{% url 'shop:shop' %}" method="GET">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search…">
+                <input type="hidden" name="category" value="{{ request.GET.category }}">
+                <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+            </form>
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <div class="notification-bell" id="notifBell">
+            <button class="bell-btn" onclick="toggleDropdown()">
+                <i class="bi bi-bell"></i>
+                <span id="notifCount">0</span>
+            </button>
+            <div id="notifDropdown">
+                <div>
+                    <strong>Notifications</strong>
+                    <a href="#" onclick="markAllRead()">Mark all read</a>
+                </div>
+                <ul id="notifList">
+                    <li style="padding:15px;color:#999;text-align:center;font-size:13px;">No notifications</li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="nav-actions">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'accounts:dashboard' %}?next={{ request.path }}" class="btn-nav btn-nav-solid">Dashboard</a>
+            <a href="{% url 'accounts:logout' %}" class="btn-nav btn-nav-outline">Logout</a>
+            {% else %}
+            <a href="{% url 'account_login' %}" class="btn-nav btn-nav-solid">Login</a>
+            {% endif %}
+            <a href="{% url 'cart:detail' %}?next={{ request.path }}" class="btn-nav btn-cart cart-btn">
+                <i class="bi bi-bag"></i> Cart ({{ cart_count }})
+            </a>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+            <i class="bi bi-list" id="hamburgerIcon"></i>
+        </button>
+    </nav>
+
+    <!-- ══ MOBILE DRAWER ══ -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mob-search">
+            <form action="{% url 'shop:shop' %}" method="GET">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search products…">
+                <input type="hidden" name="category" value="{{ request.GET.category }}">
+                <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+            </form>
+        </div>
+
+        <a class="mob-link" href="{% url 'shop:shop' %}"><i class="bi bi-house"></i> Home</a>
+        <a class="mob-link" href="{% url 'shop:taglist' %}"><i class="bi bi-tags"></i> Tags</a>
+        <a class="mob-link" href="{% url 'shop:categorylist' %}"><i class="bi bi-grid"></i> Category</a>
+        <a class="mob-link" href="{% url 'shop:create' %}?next={{ request.path }}"><i class="bi bi-plus-circle"></i> Add Product</a>
+
+        <hr class="mob-divider">
+
+        <div class="mob-actions">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'accounts:dashboard' %}?next={{ request.path }}" class="btn-nav btn-nav-solid">Dashboard</a>
+            <a href="{% url 'accounts:logout' %}" class="btn-nav btn-nav-outline">Logout</a>
+            {% else %}
+            <a href="{% url 'account_login' %}" class="btn-nav btn-nav-solid">Login</a>
+            {% endif %}
+            <a href="{% url 'cart:detail' %}?next={{ request.path }}" class="btn-nav btn-cart cart-btn">
+                <i class="bi bi-bag"></i> Cart ({{ cart_count }})
+            </a>
+        </div>
+    </div>
+
+    <!-- ══ PAGE BODY ══ -->
+    <div class="container px-3 px-md-4">
+        <div class="navbar-spacer"></div>
+
+        {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Mobile category toggle -->
+        <button class="cat-toggle" id="catToggle" onclick="toggleCategories()">
+            <i class="bi bi-grid-3x3-gap me-2"></i>Browse Categories<i class="bi bi-chevron-down arrow"></i>
+        </button>
+        <div class="sidebar-mobile" id="sidebarMobile">
+            <a href="?">All Products</a>
+            {% for category in categories %}
+            <a href="?category={{ category.slug }}">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="row g-4">
+            <!-- Desktop Sidebar -->
+            <div class="col-md-3 sidebar-col">
+                <div class="sidebar">
+                    <h6>Categories</h6>
+                    <a href="?">All Products</a>
+                    {% for category in categories %}
+                    <a href="?category={{ category.slug }}">{{ category.name }}</a>
+                    {% endfor %}
+                    <hr>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 content-area content-col">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('hamburgerIcon');
+            const isOpen = menu.classList.toggle('open');
+            icon.className = isOpen ? 'bi bi-x-lg' : 'bi bi-list';
+        }
+
+        function toggleCategories() {
+            document.getElementById('catToggle').classList.toggle('open');
+            document.getElementById('sidebarMobile').classList.toggle('open');
+        }
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.getElementById('hamburgerBtn');
+            if (menu && menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.remove('open');
+                document.getElementById('hamburgerIcon').className = 'bi bi-list';
+            }
+            const bell = document.getElementById('notifBell');
+            if (bell && !bell.contains(e.target)) {
+                const d = document.getElementById('notifDropdown');
+                if (d) d.style.display = 'none';
+            }
+        });
+    </script>
+
+    <script>
+        {% if request.user.is_authenticated %}{% endif %}
+    </script>
+
+    <script>
+        function getCSRFToken() {
+            return document.cookie.split('; ').find(r => r.startsWith('csrftoken'))?.split('=')[1];
+        }
+
+        const ws = new WebSocket(`ws://${window.location.host}/ws/notifications/`);
+        ws.onmessage = (e) => { const d = JSON.parse(e.data); incrementBadge(); prependNotification(d); };
+
+        function toggleDropdown() {
+            const d = document.getElementById('notifDropdown');
+            const hidden = d.style.display === 'none' || !d.style.display;
+            d.style.display = hidden ? 'block' : 'none';
+            if (hidden) { loadNotifications(); markAllRead(); }
+        }
+
+        function loadNotifications() {
+            fetch('/notifications/api/notifications/').then(r => r.json()).then(data => {
+                updateBadge(data.unread_count); renderList(data.notifications);
+            });
+        }
+
+        function renderList(notifications) {
+            const list = document.getElementById('notifList');
+            if (!list) return;
+            if (!notifications.length) { list.innerHTML = '<li style="padding:15px;color:#999;text-align:center;font-size:13px;">No notifications</li>'; return; }
+            list.innerHTML = notifications.map(n => `
+                <li style="padding:12px 15px;border-bottom:1px solid #f0f0f0;background:${n.is_read ? '#fff' : '#fdf8ef'}">
+                    <strong style="font-size:13px;">${n.title}</strong>
+                    <p style="margin:3px 0;font-size:12px;color:#666;">${n.message}</p>
+                    <small style="color:#aaa;font-size:11px;">${n.time}</small>
+                </li>`).join('');
+        }
+
+        function prependNotification(data) {
+            const list = document.getElementById('notifList');
+            if (!list) return;
+            const item = document.createElement('li');
+            item.style.cssText = 'padding:12px 15px;border-bottom:1px solid #f0f0f0;background:#fdf8ef;';
+            item.innerHTML = `<strong style="font-size:13px;">${data.title}</strong>
+                <p style="margin:3px 0;font-size:12px;color:#666;">${data.message}</p>
+                <small style="color:#aaa;font-size:11px;">Just now</small>`;
+            if (list.children.length === 1 && list.children[0].style.textAlign === 'center') list.innerHTML = '';
+            list.prepend(item);
+        }
+
+        function incrementBadge() {
+            const b = document.getElementById('notifCount');
+            if (b) updateBadge((parseInt(b.textContent) || 0) + 1);
+        }
+
+        function updateBadge(count) {
+            const b = document.getElementById('notifCount');
+            if (!b) return;
+            b.textContent = count;
+            b.style.display = count > 0 ? 'inline' : 'none';
+        }
+
+        function markAllRead() {
+            fetch('/notifications/api/notifications/read/', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' } })
+                .then(() => { updateBadge(0); loadNotifications(); });
+        }
+
+        loadNotifications();
+    </script>
+
+    <script>
+        const addToCart = document.querySelectorAll('.add-to-cart');
+        addToCart.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch(`/add/${this.dataset.id}/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken() },
+                    body: JSON.stringify({ quantity: 1 })
+                }).then(r => r.json()).then(data => {
+                    if (data.success) document.querySelectorAll('.cart-btn').forEach(el => {
+                        el.innerHTML = `<i class="bi bi-bag"></i> Cart (${data.cart_count})`;
+                    });
+                });
+            });
+        });
+
+        const cartRemove = document.querySelectorAll('.cart-remove');
+        cartRemove.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch(`/remove/${this.dataset.id}/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken() }
+                }).then(r => r.json()).then(data => {
+                    if (data.success) {
+                        document.querySelectorAll('.cart-btn').forEach(el => {
+                            el.innerHTML = `<i class="bi bi-bag"></i> Cart (${data.cart_count})`;
+                        });
+                        this.closest('tr').remove();
+                        if (data.cart_empty) window.location.href = '/';
+                    }
+                }).catch(e => console.error(e));
+            });
+        });
+
+        document.querySelectorAll('.increase-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch(`/inc/${this.dataset.id}/`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken() }
+                }).then(r => r.json()).then(data => {
+                    if (data.success) document.querySelectorAll('.cart-btn').forEach(el => {
+                        el.innerHTML = `<i class="bi bi-bag"></i> Cart (${data.cart_count})`;
+                    });
+                }).catch(e => console.error(e));
+            });
+        });
+
+        document.querySelectorAll('.decrease-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch(`/dec/${this.dataset.id}/`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken() }
+                }).then(r => r.json()).then(data => {
+                    if (data.success) document.querySelectorAll('.cart-btn').forEach(el => {
+                        el.innerHTML = `<i class="bi bi-bag"></i> Cart (${data.cart_count})`;
+                    });
+                }).catch(e => console.error(e));
+            });
+        });
+
+        function getCSRFToken() {
+            return document.cookie.split('; ').find(r => r.startsWith('csrftoken'))?.split('=')[1];
+        }
+    </script>
+
+</body>
+</html>

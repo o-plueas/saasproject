@@ -1,0 +1,140 @@
+{% extends 'shop/base.html' %}
+{% block title %} Tag List {% endblock %}
+
+{% block content %}
+
+<style>
+/* HEADER */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* GRID */
+.tag-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+/* CARD */
+.tag-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+    text-align: center;
+}
+
+.tag-card:hover {
+    transform: translateY(-4px);
+}
+
+/* TAG NAME */
+.tag-name {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* ACTIONS */
+.tag-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* BUTTONS */
+.btn-edit {
+    border: 1px solid #333;
+    color: #333;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.btn-edit:hover {
+    background: #333;
+    color: white;
+}
+
+.btn-delete {
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.btn-delete:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* EMPTY */
+.empty-box {
+    text-align: center;
+    padding: 50px;
+    color: #777;
+}
+</style>
+
+<!-- HEADER -->
+<div class="page-header">
+    <h5 class="mb-0">🏷 Tags</h5>
+
+    <a href="{% url 'shop:tag' %}" class="btn btn-dark btn-sm">
+        + Create Tag
+    </a>
+</div>
+
+{% if tags %}
+
+<!-- GRID -->
+<div class="tag-grid">
+
+    {% for tag in tags %}
+    <div class="tag-card">
+
+        <!-- NAME -->
+        <div class="tag-name">
+            {{ tag.name|upper }}
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="tag-actions">
+
+            <a href="{% url 'shop:tagupdate' tag.pk %}" class="btn-edit">
+                Edit
+            </a>
+
+            <a href="{% url 'shop:tagdelete' tag.pk %}" 
+               class="btn-delete"
+               onclick="return confirm('Delete this tag?')">
+                Delete
+            </a>
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<!-- EMPTY STATE -->
+<div class="empty-box">
+    <h6>No tags yet</h6>
+    <a href="{% url 'shop:tag' %}" class="btn btn-dark mt-2">
+        Create your first tag
+    </a>
+</div>
+
+{% endif %}
+
+{% endblock %}

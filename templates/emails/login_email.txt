@@ -1,0 +1,9 @@
+Hi {{ user.get_full_name|default:user.username }},
+
+Your are logged in to MyShop! Please confirm this action was taken by you.
+
+If yes,
+Start exploring our products: http://your-domain.com/
+
+Thank you,
+The MyShop Team

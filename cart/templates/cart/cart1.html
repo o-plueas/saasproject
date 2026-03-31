@@ -1,0 +1,200 @@
+{% extends 'shop/base.html' %}
+{% block title %} Cart {% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    {{ message }}
+
+{% endfor %}
+
+{% endif %}
+
+<style>
+/* CARD */
+.cart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+/* HEADER */
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* TABLE */
+.cart-table th {
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+}
+
+.cart-table td {
+    vertical-align: middle;
+}
+
+/* PRODUCT CELL */
+.product-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+/* PRICE */
+.price {
+    color: #2ecc71;
+    font-weight: 600;
+}
+
+/* QTY */
+.qty-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 26px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.qty-btn:hover {
+    background: #f0f0f0;
+}
+
+.qty-number {
+    min-width: 20px;
+    text-align: center;
+}
+
+/* FOOTER */
+.cart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.checkout-btn {
+    background: #4a6cf7;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    border: none;
+    text-decoration: none;
+}
+
+.checkout-btn:hover {
+    background: #2f54eb;
+    color: white;
+}
+</style>
+
+<div class="cart-card">
+
+    <!-- HEADER -->
+    <div class="cart-header">
+        <h5 class="mb-0">🛒 Cart</h5>
+        <a href="{% url 'shop:shop' %}" class="text-muted small">← Continue shopping</a>
+    </div>
+
+    {% if cart.get_items %}
+
+    <!-- TABLE -->
+    <table class="table cart-table align-middle">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-end">Total</th>
+                <th class="text-end"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in cart.get_items %}
+            <tr>
+
+                <!-- PRODUCT -->
+                <td>
+                    <div class="product-cell">
+                        <img src="{{ item.product.image.url }}" class="product-img">
+                        <span>{{ item.product.name }}</span>
+                    </div>
+                </td>
+
+                <!-- PRICE -->
+                <td class="price">
+                    ₦{{ item.product.effective_price }}
+                </td>
+
+                <!-- QUANTITY -->
+                <td>
+                    <div class="qty-box justify-content-center">
+
+                        <a href="#" class="qty-btn decrease-btn" data-id="{{ item.product.id }}">−</a>
+
+                        <span class="qty-number">{{ item.qty }}</span>
+
+                        <a href=""  class="qty-btn increase-btn" data-id="{{ item.product.id }}">+</a>
+
+                    </div>
+                </td>
+
+                <!-- SUBTOTAL -->
+                <td class="text-end fw-semibold">
+                    ₦{{ item.subtotal }}
+                </td>
+<td>
+                    <a href="" class="cart-remove" data-id="{{ item.product.id }}">X</a>
+
+</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- FOOTER -->
+    <div class="cart-footer">
+        <strong>Subtotal: ₦{{ cart.get_total }}</strong>
+
+        <a href="{% url 'orders:checkout' %}" class="checkout-btn">
+            Proceed to Checkout
+        </a>
+    </div>
+
+    {% else %}
+
+    <div class="text-center py-5 text-muted">
+        <h5>Your cart is empty</h5>
+        <a href="{% url 'shop:shop' %}" class="btn btn-dark mt-3">
+            Continue Shopping
+        </a>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

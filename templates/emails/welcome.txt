@@ -1,0 +1,8 @@
+Hi {{ user.get_full_name|default:user.username }},
+
+Welcome to MyShop! We're thrilled to have you on board.
+
+Start exploring our products: http://your-domain.com/
+
+Thank you,
+The MyShop Team

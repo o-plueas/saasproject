@@ -1,0 +1,141 @@
+{% extends 'shop/base.html' %}
+{% block title %} Checkout {% endblock %}
+
+{% block content %}
+
+<style>
+/* BACKGROUND (wood-like dark tone) */
+.checkout-wrapper {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4');
+    background-size: cover;
+    background-position: center;
+    padding: 40px;
+    border-radius: 12px;
+}
+
+/* CARD */
+.checkout-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* INPUTS */
+.checkout-card input,
+.checkout-card textarea {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.checkout-card input:focus,
+.checkout-card textarea:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #4a6cf7;
+}
+
+/* TITLE */
+.checkout-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* ORDER SUMMARY */
+.summary-box {
+    background: #f9fafc;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* BUTTON */
+.checkout-btn {
+    background: #4a6cf7;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    margin-top: 10px;
+}
+
+.checkout-btn:hover {
+    background: #2f54eb;
+}
+
+/* ITEM ROW */
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+</style>
+
+<div class="checkout-wrapper">
+
+    <div class="row">
+
+        <!-- LEFT: FORM -->
+        <div class="col-md-7">
+            <div class="checkout-card">
+
+                <h5 class="checkout-title">Billing Details</h5>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <input name="name" placeholder="Full Name" required>
+                    <input name="email" placeholder="Email Address" required>
+                    <input name="phone" placeholder="Phone Number" required>
+                    <input name="city" placeholder="City" required>
+
+                    <textarea name="address" placeholder="Full Address" rows="3"></textarea>
+
+                    <!-- hidden total -->
+                    <input type="hidden" name="total" value="{{ cart.get_total }}">
+
+                    <button type="submit" class="btn btn-success checkout-btn">
+                        Place Order
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- RIGHT: SUMMARY -->
+        <div class="col-md-5">
+            <div class="checkout-card">
+
+                <h5 class="checkout-title">Order Summary</h5>
+
+                <div class="summary-box">
+
+                    {% for item in cart.get_items %}
+                    <div class="summary-item">
+                        <span>{{ item.product.name }} x{{ item.qty }}</span>
+                        <span>₦{{ item.subtotal }}</span>
+                    </div>
+                    {% endfor %}
+
+                    <hr>
+
+                    <div class="summary-item fw-bold">
+                        <span>Total</span>
+                        <span>₦{{ cart.get_total }}</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'accounts/dashboard/base.html' %}
+{% block title %} All Orders {% endblock %}
+
+{% block content %}
+
+<style>
+    .orders-container {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .table th {
+        font-size: 13px;
+        color: #6b7280;
+        text-transform: uppercase;
+    }
+
+    .table td {
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .status-pending { background: #fff3cd; color: #ff6a00; }
+    .status-paid { background: #d1e7dd; color: #198754; }
+    .status-processing { background: #cfe2ff; color: #0d6efd; }
+    .status-completed { background: #e2e3e5; color: #333; }
+
+    .btn-view {
+        background: #eef2ff;
+        color: #4a6cf7;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+    .btn-view:hover {
+        background: #4a6cf7;
+        color: white;
+    }
+</style>
+
+<div class="orders-container">
+
+    <h5 class="mb-4">All Orders</h5>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>Products</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for order in orders %}
+                <tr>
+
+                    <td>{{ forloop.counter }}</td>
+                    <td>#{{ order.id }}</td>
+
+                    <td>{{ order.full_name }}</td>
+                    <td>{{ order.phone }}</td>
+                    <td>{{ order.city }}</td>
+
+                    <!-- PRODUCTS LIST -->
+                    <td>
+                        {% for item in order.items.all %}
+                            <div>
+                                {{ item.product.name }} (x{{ item.quantity }})
+                            </div>
+                        {% endfor %}
+                    </td>
+
+                    <!-- STATUS -->
+                    <td>
+                        <span class="status-badge 
+                            {% if order.status == 'pending' %}status-pending{% endif %}
+                            {% if order.status == 'paid' %}status-paid{% endif %}
+                            {% if order.status == 'processing' %}status-processing{% endif %}
+                            {% if order.status == 'completed' %}status-completed{% endif %}
+                        ">
+                            {{ order.status|title }}
+                        </span>
+                    </td>
+
+                    <!-- TOTAL -->
+                    <td>₦{{ order.total }}</td>
+
+                    <!-- DATE -->
+                    <td>{{ order.created_at|date:"d M Y" }}</td>
+
+                    <!-- ACTION -->
+                    <td>
+                        <a href="{% url 'orders:orderdetail' order.id %}" class="btn-view">View</a>
+                    </td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="text-center">No orders found</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

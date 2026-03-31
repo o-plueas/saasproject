@@ -1,0 +1,19 @@
+ 
+{# templates/emails/order_confirmation.html #}
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Thank you for your order!</h2>
+<p>Order #{{ order.pk }} has been placed successfully.</p>
+<table>
+  {% for item in items %}
+  <tr>
+    <td>{{ item.product.name }}</td>
+    <td>x{{ item.quantity }}</td>
+    <td>${{ item.subtotal }}</td>
+  </tr>
+  {% endfor %}
+  <tr><td colspan='2'><strong>Total</strong></td><td>${{ order.total }}</td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'shop/base.html' %}
+{% block title %} Confirm Delete {% endblock %}
+
+{% block content %}
+
+    
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h4>Confirm delete Product? </h4>
+        <button type="submit">YES</button>
+    </form>
+
+    {% endblock %}
