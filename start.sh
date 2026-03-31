@@ -8,7 +8,6 @@ echo "Starting Celery worker..."
 celery -A saasproject worker --uid=nobody -l info &
 
 echo "Starting Celery worker..."
-# celery -A saasproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler &
 celery -A saasproject worker --concurrency=1 --uid=nobody -l info &
 
 echo "Starting Daphne..."
