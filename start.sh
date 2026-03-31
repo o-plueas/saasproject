@@ -5,7 +5,7 @@ echo "Running migrations..."
 python manage.py migrate --noinput
 
 echo "Starting Celery worker..."
-celery -A saasproject worker -l info &
+celery -A saasproject worker --uid=nobody -l info &
 
 echo "Starting Celery beat..."
 celery -A saasproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler &
