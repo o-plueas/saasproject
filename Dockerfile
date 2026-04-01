@@ -12,7 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Dummy env vars just for collectstatic during build
 ENV SECRET_KEY=dummy-secret-key-for-build
 ENV DEBUG=False
 ENV ALLOWED_HOSTS=localhost
@@ -28,4 +27,4 @@ RUN python manage.py collectstatic --noinput
 RUN chmod +x start.sh
 
 ENV PORT=10000
-CMD ["./start.sh"]
+CMD ["/bin/bash", "start.sh"]
