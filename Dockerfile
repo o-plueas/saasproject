@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y gcc curl libpq-dev
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+ARG CACHEBUST=2
+RUN echo $CACHEBUST
+
 COPY . .
 
 ENV SECRET_KEY=dummy-secret-key-for-build
