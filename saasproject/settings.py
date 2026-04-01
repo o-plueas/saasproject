@@ -163,7 +163,7 @@ REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': f'{REDIS_URL}/1',
+        'LOCATION': f'{REDIS_URL}/0',
         
     }
 }
