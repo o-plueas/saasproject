@@ -25,11 +25,11 @@ class Order(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
     )
-    full_name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=200)
     address = models.TextField()
-    city = models.CharField(max_length=100)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    city = models.CharField(max_length=200)
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, default=STATUS_PENDING)
     # ✅ total is always calculated server-side, never trusted from POST
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
