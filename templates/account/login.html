@@ -31,11 +31,12 @@
 
     <button type="submit">Sign In</button>
 </form>
-
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
 <div class="divider">Or use a third-party</div>
-
 <a href="{% provider_login_url 'google' %}" class="social-btn google">
     Continue with Google
 </a>
+{% endif %}
 
 {% endblock %}
