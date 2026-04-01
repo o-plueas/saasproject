@@ -1,0 +1,7 @@
+[build]
+dockerfilePath = "Dockerfile.celery"
+
+[deploy]
+startCommand = "celery -A saasproject worker --concurrency=1 -l info"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
