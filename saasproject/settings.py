@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 
 
@@ -78,9 +78,10 @@ AUTHENTICATION_BACKENDS = (
 
 # authaccount setting 
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True 
-ACCOUNT_USERNAME_REQUIRED = True 
+
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+
 ACCOUNT_USER_MODEL_USERNAME_FIELD ="username"
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 LOGOUT_REDIRECT = '/'

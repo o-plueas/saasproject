@@ -29,5 +29,8 @@ RUN python manage.py collectstatic --noinput
 
 RUN chmod +x start.sh
 
+RUN sed -i 's/\r//' start.sh && chmod +x start.sh
+
+
 ENV PORT=10000
 CMD ["/bin/bash", "start.sh"]
