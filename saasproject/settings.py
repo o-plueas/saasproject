@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'channels', 
     # 'django_celery_beat', 
     'accounts', 'shop', 'cart','orders','notifications',
-    'cloudinary',
-    'cloudinary_storage',
+  
 
     # allauth apps
     'django.contrib.sites',
