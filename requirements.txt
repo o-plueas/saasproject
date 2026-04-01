@@ -66,3 +66,5 @@ wcwidth==0.6.0
 zope.interface==8.2
 dj-database-url
 whitenoise
+psycopg2-binary
+dj-database-url

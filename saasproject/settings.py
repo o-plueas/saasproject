@@ -338,8 +338,8 @@ EMAIL_BACKEND     = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST        = 'smtp.gmail.com'
 EMAIL_PORT        = 587
 EMAIL_USE_TLS     = True
-EMAIL_HOST_USER   = config('EMAIL_HOST_USER')   # from .env
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER   = config('EMAIL_HOST_USER', default='')   # from .env
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 # app_password = tpni qogy awrp vmup
 
 DEFAULT_FROM_EMAIL = 'oplues01@gmail.com'
@@ -357,9 +357,9 @@ EMAIL_HOST_USER     = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
  
 
-PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY')
+PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY', default='') 
 
-PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY', default='')
 
 
 
