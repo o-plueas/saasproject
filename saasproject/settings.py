@@ -188,8 +188,15 @@ CHANNEL_LAYERS = {
     }
 }
 
+import ssl
+
 CELERY_BROKER_URL = f'{REDIS_URL}/0'
 CELERY_RESULT_BACKEND = f'{REDIS_URL}/0'
+
+
+# Required for Upstash TLS (rediss://)
+CELERY_BROKER_USE_SSL = {'ssl_cert_reqs': ssl.CERT_NONE}
+CELERY_REDIS_BACKEND_USE_SSL = {'ssl_cert_reqs': ssl.CERT_NONE}
 
 
 
