@@ -162,7 +162,17 @@ Solution: Used JWT with SimpleJWT
 
 Live Demo
 
-Add your deployed link here
+
+RENDER (DEPLOYED Django and Daphne VIA DOCKER here)
+
+https://store-vtv7.onrender.com 
+
+RAILWAY (DEPLOYED Django Celery here)
+
+UPSTASH (DEPLOYED REDIS HERE)
+
+CLOUDINARY (FOR IMAGE UPLOAD)
+
 
 
 
