@@ -14,22 +14,22 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='order',
             name='city',
-            field=models.CharField(max_length=100),
+            field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
             model_name='order',
             name='full_name',
-            field=models.CharField(max_length=100),
+            field=models.CharField(max_length=200),
         ),
         migrations.AlterField(
             model_name='order',
             name='phone',
-            field=models.CharField(default=datetime.datetime(2026, 3, 25, 19, 0, 52, 278674, tzinfo=datetime.timezone.utc), max_length=20),
+            field=models.CharField(default='', max_length=200),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='order',
             name='status',
-            field=models.CharField(choices=[('pending', 'Pending'), ('processing', 'Processing'), ('paid', 'Paid'), ('shipped', 'Shipped'), ('delivered', 'Delivered'), ('cancelled', 'Cancelled'), ('completed', 'Completed')], default='pending', max_length=20),
+            field=models.CharField(choices=[('pending', 'Pending'), ('processing', 'Processing'), ('paid', 'Paid'), ('shipped', 'Shipped'), ('delivered', 'Delivered'), ('cancelled', 'Cancelled'), ('completed', 'Completed')], default='pending', max_length=100),
         ),
     ]
