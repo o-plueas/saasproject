@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y gcc curl libpq-dev
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-ARG CACHEBUST=2
+ARG CACHEBUST=3
 RUN echo $CACHEBUST
 
 COPY . .
@@ -29,13 +29,9 @@ ENV CLOUDINARY_API_KEY=dummy
 ENV CLOUDINARY_API_SECRET=dummy
 ENV CLOUDINARY_URL=dummy
 
-
-RUN python manage.py collectstatic --noinput
-
-RUN chmod +x start.sh
+RUN python manage.py collectstatic --noinput && echo "Static files collected" && ls /app/staticfiles/
 
 RUN sed -i 's/\r//' start.sh && chmod +x start.sh
-
 
 ENV PORT=10000
 CMD ["/bin/bash", "start.sh"]
