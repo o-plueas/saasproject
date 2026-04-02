@@ -24,6 +24,11 @@ ENV PAYSTACK_PUBLIC_KEY=dummy
 ENV PAYSTACK_SECRET_KEY=dummy
 ENV REDIS_URL=redis://localhost:6379
 ENV DJANGO_SETTINGS_MODULE=saasproject.settings
+ENV CLOUDINARY_CLOUD_NAME=dummy
+ENV CLOUDINARY_API_KEY=dummy
+ENV CLOUDINARY_API_SECRET=dummy
+ENV CLOUDINARY_URL=dummy
+
 
 RUN python manage.py collectstatic --noinput
 
