@@ -25,41 +25,33 @@ CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
 # Application definition
 
-INSTALLED_APPS = [
-        'daphne',
 
+
+
+INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',           # ← must be before staticfiles
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',  # ← moved up
+    'cloudinary_storage',
     'cloudinary',
-
-    'channels', 
-    # 'django_celery_beat', 
-    'accounts', 'shop', 'cart','orders','notifications',
-  
-
-    # allauth apps
+    'channels',
+    'accounts', 'shop', 'cart', 'orders', 'notifications',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
-    # social providier I want are 
-
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.github',
-
-
-    #rest, cors 
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
 ]
+
 
 
 
