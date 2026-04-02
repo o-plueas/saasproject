@@ -96,8 +96,8 @@ django-cors-headers for API security
 Installation
 
 ```bash
-git clone https://github.com/yourusername/vendor-shop.git
-cd vendor-shop
+git clone https://github.com/o-plueas/saasproject.git
+cd saasproject
 
 python -m venv env
 source env/bin/activate  # Windows: env\Scripts\activate
@@ -121,19 +121,19 @@ redis-server
 Run Celery Worker
 
 ```bash
-celery -A your_project worker -l info
+celery -A saasproject worker -l info
 ```
 
 Run Celery Beat for scheduled tasks
 
 ```bash
-celery -A your_project beat -l info
+celery -A saasproject beat -l info
 ```
 
 Run Daphne for Channels
 
 ```bash
-daphne -b 0.0.0.0 -p 8000 your_project.asgi:application
+daphne -b 0.0.0.0 -p 8000 saasproject.asgi:application
 ```
 
 
@@ -153,26 +153,13 @@ Problem: Slow response when sending emails
 Solution: Offloaded email sending to Celery background workers
 
 Problem: Need real-time cart updates
+Solution: Used fetch api to implement realtime update
+
+Problem: Need realtime notification
 Solution: Implemented WebSockets using Django Channels
 
 Problem: Secure API authentication
 Solution: Used JWT with SimpleJWT
-
-
-
-Live Demo
-
-
-RENDER (DEPLOYED Django and Daphne VIA DOCKER here)
-
-https://store-vtv7.onrender.com 
-
-RAILWAY (DEPLOYED Django Celery here)
-
-UPSTASH (DEPLOYED REDIS HERE)
-
-CLOUDINARY (FOR IMAGE UPLOAD)
-
 
 
 
@@ -185,12 +172,9 @@ Vendor dashboard
 Checkout
 
 
-
 Contact
 
 Email: [ugwuogochukwu01@gmail.com](mailto:ugwuogochukwu01@gmail.com)
-
-
 
 Hiring Note
 
