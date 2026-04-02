@@ -415,6 +415,24 @@
             <a href="{% url 'accounts:dashboard' %}" class="active">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
+
+
+          
+
+            <a href="{% url 'shop:taglist' %}">
+                <i class="bi bi-bag-check"></i> Tags
+            </a>
+            
+              <a href="{% url 'shop:categorylist %}">
+                <i class="bi bi-bag-check"></i> Category
+            </a> 
+
+             <a href="{% url 'shop:create' %}?next={{ request.path }}">
+                <i class="bi bi-bag-check"></i> Products
+            </a>
+
+            
+    
             <a href="{% url 'orders:allorders' %}">
                 <i class="bi bi-bag-check"></i> Orders
             </a>
@@ -424,6 +442,7 @@
             <a href="{% url 'accounts:profile' %}">
                 <i class="bi bi-person-gear"></i> Account Settings
             </a>
+
             {% comment %}{% endif %}{% endcomment %}
 
             <!-- Vendor nav -->

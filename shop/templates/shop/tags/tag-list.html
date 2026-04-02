@@ -107,6 +107,7 @@
 
         <!-- ACTIONS -->
         <div class="tag-actions">
+            {% if request.user.role == 'admin' %}
 
             <a href="{% url 'shop:tagupdate' tag.pk %}" class="btn-edit">
                 Edit
@@ -118,6 +119,9 @@
                 Delete
             </a>
 
+            {% else %}
+
+            {% endif %}
         </div>
 
     </div>
@@ -130,9 +134,15 @@
 <!-- EMPTY STATE -->
 <div class="empty-box">
     <h6>No tags yet</h6>
+    {% if request.user.role == 'admin' %}
+
     <a href="{% url 'shop:tag' %}" class="btn btn-dark mt-2">
         Create your first tag
     </a>
+
+    {% else %}
+
+    {% endif %}
 </div>
 
 {% endif %}

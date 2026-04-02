@@ -178,8 +178,11 @@
                 {% endif %}
 
                 <div class="secondary-actions">
+                    {% if request.user.role == 'admin' %}
                     <a href="{% url 'shop:update' product.pk %}">✏ Edit</a>
                     <a href="{% url 'shop:delete' product.pk %}" class="danger">🗑 Delete</a>
+                    {% else %}
+                    {% endif %}
                 </div>
 
                 <div class="soft-actions">

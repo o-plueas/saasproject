@@ -25,7 +25,6 @@
             <a class="navlink" href="{% url 'shop:shop' %}">Home</a>
             <a class="navlink" href="{% url 'shop:taglist' %}">Tags</a>
             <a class="navlink" href="{% url 'shop:categorylist' %}">Category</a>
-            <a class="navlink" href="{% url 'shop:create' %}?next={{ request.path }}">+ Product</a>
         </div>
 
         <div class="nav-search">
@@ -90,7 +89,11 @@
 
         <div class="mob-actions">
             {% if request.user.is_authenticated %}
+                {% if request.user.role == 'admin' %}
             <a href="{% url 'accounts:dashboard' %}?next={{ request.path }}" class="btn-nav btn-nav-solid">Dashboard</a>
+                {% else %}
+                {% endif %}
+
             <a href="{% url 'accounts:logout' %}" class="btn-nav btn-nav-outline">Logout</a>
             {% else %}
             <a href="{% url 'account_login' %}" class="btn-nav btn-nav-solid">Login</a>

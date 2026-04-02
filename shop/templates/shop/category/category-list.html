@@ -93,9 +93,15 @@
 <div class="page-header">
     <h5 class="mb-0">Categories</h5>
 
+    {% if request.user.role == 'admin' %}
+
     <a href="{% url 'shop:category' %}" class="btn btn-dark btn-sm">
         + Create Category
     </a>
+
+    {% else %}
+
+    {% endif %}
 </div>
 
 {% if categories %}
@@ -116,6 +122,7 @@
 
         <!-- ACTIONS -->
         <div class="card-actions">
+            {% if request.user.role == 'admin' %}
 
             <a href="{% url 'shop:categoryupdate' category.pk %}" class="btn-edit">
                 Edit
@@ -126,6 +133,10 @@
                onclick="return confirm('Delete this category?')">
                 Delete
             </a>
+
+            {% else %}
+
+            {% endif %}
 
         </div>
 
@@ -139,9 +150,14 @@
 <!-- EMPTY -->
 <div class="empty-box">
     <h6>No categories yet</h6>
+    {% if request.user.role == 'admin' %}
     <a href="{% url 'shop:category' %}" class="btn btn-dark mt-2">
         Create your first category
     </a>
+
+    {% else %}
+
+    {% endif %}
 </div>
 
 {% endif %}
