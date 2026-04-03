@@ -162,19 +162,43 @@ Problem: Secure API authentication
 Solution: Used JWT with SimpleJWT
 
 
+Live Demo
+
+https://youtu.be/8GnVtF7GqUI
 
 Screenshots
 
-Homepage
+Homepage (No login)
+https://drive.google.com/file/d/1BH6CfgzYApNZG0QijcbOdKCD56zBRZvg/view?usp=drive_link
+
+
 Product listing
+https://drive.google.com/file/d/1hKSO9FqRijAsSzQzPXWdeR1Mc8XQk35s/view?usp=drive_link
+
 Cart
-Vendor dashboard
+
+ps://drive.google.com/file/d/1PHwgqdK_rJSuTs3SItJ634YsncEByQfB/view?usp=drive_link
+
+Order Form
+https://drive.google.com/file/d/1FqPLUI4fO_3fzV1nz3nQ4-FfC6bPfAU0/view?usp=drive_link
+
 Checkout
+https://drive.google.com/file/d/1kaReJ3qUiItnpp7R0VOxTCjfSunL72IH/view?usp=drive_link
+
+Vendor dashboard
+https://drive.google.com/file/d/13W_DGWq_rWWqswxlV8mhyf1Bx0wTsaeL/view?usp=drive_link
+
 
 
 Contact
 
-Email: [ugwuogochukwu01@gmail.com](mailto:ugwuogochukwu01@gmail.com)
+Email: 
+ugwuogochukwu01@gmail.com 
+
+LinkedIn:
+www.linkedin.com/in/ogochukwu-lucy-ugwu
+
+
 
 Hiring Note
 
